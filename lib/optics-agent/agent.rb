@@ -31,12 +31,16 @@ module OpticsAgent
     end
 
     def add_query(query, rack_env, start_time, end_time)
+      puts "adding query to queue"
       @semaphone.synchronize {
         @query_queue << [query, rack_env, start_time, end_time]
       }
+      puts "query_queue length is #{@query_queue.length}"
     end
 
     def clear_query_queue
+      puts "clearing query_queue"
+      puts "query_queue length is #{@query_queue.length}"
       @semaphone.synchronize {
         queue = @query_queue
         @query_queue = []
