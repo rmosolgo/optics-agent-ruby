@@ -18,7 +18,7 @@ module OpticsAgent::Reporting
       report.decorate_from_schema(agent.schema)
       report.send
 
-      self.class.perform_in(60, agent)
+      agent.schedule_report
     end
   end
 end

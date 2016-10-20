@@ -19,7 +19,6 @@ module OpticsAgent
     def initialize
       @query_queue = []
       @semaphone = Mutex.new
-      ReportJob.perform_in(60, self)
     end
 
     def instrument_schema(schema)
@@ -28,6 +27,11 @@ module OpticsAgent
 
       puts 'scheduling schema job'
       SchemaJob.perform_in(10, self)
+      schedule_report
+    end
+
+    def schedule_report
+      ReportJob.perform_in(60, self)
     end
 
     def add_query(query, rack_env, start_time, end_time)
