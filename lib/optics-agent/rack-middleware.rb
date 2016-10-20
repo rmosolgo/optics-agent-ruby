@@ -29,7 +29,9 @@ module OpticsAgent
 
         # XXX: this approach means if the user forgets to call with_document
         # we just never log queries. Can we detect if the request is a graphql one?
+        puts "request finished, has document: #{query.document}"
         if (query.document)
+          puts "attaching query to agent"
           agent.add_query(query, env, start_time, Time.now)
         end
 
