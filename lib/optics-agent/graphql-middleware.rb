@@ -7,10 +7,19 @@ module OpticsAgent
 
       start_time = Time.now
       result = next_middleware.call
-      end_time = Time.now
 
-      query = query_context[:optics_agent][:query]
-      query.report_field(parent_type.to_s, field_definition.name, start_time, end_time)
+      finish = Proc.new do
+        end_time = Time.now
+
+        query = query_context[:optics_agent][:query]
+        query.report_field(parent_type.to_s, field_definition.name, start_time, end_time)
+      end
+
+      if result.respond_to?(:then)
+        result.then(finish)
+      else
+        finish.call
+      end
 
       result
     end
