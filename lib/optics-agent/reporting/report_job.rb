@@ -7,7 +7,10 @@ module OpticsAgent::Reporting
 
     def perform(agent)
       report = OpticsAgent::Reporting::Report.new
-      agent.clear_query_queue.each do |item|
+      items = agent.clear_query_queue
+      puts "reporting: queue length is #{items.length}"
+      p agent
+      items.each do |item|
         report.add_query(*item)
 
         # XXX: don't send *every* trace
