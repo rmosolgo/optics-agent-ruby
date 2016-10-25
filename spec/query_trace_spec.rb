@@ -6,24 +6,13 @@ require 'graphql'
 include Apollo::Optics::Proto
 include OpticsAgent::Reporting
 
-class DocumentMock
-  def initialize(key)
-    @key = key
-  end
-
-  def [](name) # used for [:query]
-    @key
-  end
-end
-
-
 describe QueryTrace do
   it "can represent a simple query" do
     query = Query.new
     query.report_field 'Person', 'firstName', 1, 1.1
     query.report_field 'Person', 'lastName', 1, 1.1
     query.report_field 'Query', 'person', 1, 1.22
-    query.document = DocumentMock.new('{field}')
+    query.document = '{field}'
 
     trace = QueryTrace.new(query, {}, 1, 1.25)
 

@@ -6,24 +6,13 @@ require 'graphql'
 include OpticsAgent::Reporting
 include Apollo::Optics::Proto
 
-class DocumentMock
-  def initialize(key)
-    @key = key
-  end
-
-  def [](name) # used for [:query]
-    @key
-  end
-end
-
-
 describe Report do
   it "can represent a simple query" do
     query = Query.new
     query.report_field 'Person', 'firstName', 1, 1.1
     query.report_field 'Person', 'lastName', 1, 1.1
     query.report_field 'Query', 'person', 1, 1.22
-    query.document = DocumentMock.new('{field}')
+    query.document = '{field}'
 
     report = Report.new
     report.add_query query, {}, 1, 1.25
@@ -52,13 +41,13 @@ describe Report do
     queryOne.report_field 'Person', 'firstName', 1, 1.1
     queryOne.report_field 'Person', 'lastName', 1, 1.1
     queryOne.report_field 'Query', 'person', 1, 1.22
-    queryOne.document = DocumentMock.new('{field}')
+    queryOne.document = '{field}'
 
     queryTwo = Query.new
     queryTwo.report_field 'Person', 'firstName', 1, 1.05
     queryTwo.report_field 'Person', 'lastName', 1, 1.05
     queryTwo.report_field 'Query', 'person', 1, 1.2
-    queryTwo.document = DocumentMock.new('{field}')
+    queryTwo.document = '{field}'
 
     report = Report.new
     report.add_query queryOne, {}, 1, 1.1
@@ -88,13 +77,13 @@ describe Report do
     queryOne.report_field 'Person', 'firstName', 1, 1.1
     queryOne.report_field 'Person', 'lastName', 1, 1.1
     queryOne.report_field 'Query', 'person', 1, 1.22
-    queryOne.document = DocumentMock.new('{fieldOne}')
+    queryOne.document = '{fieldOne}'
 
     queryTwo = Query.new
     queryTwo.report_field 'Person', 'firstName', 1, 1.05
     queryTwo.report_field 'Person', 'lastName', 1, 1.05
     queryTwo.report_field 'Query', 'person', 1, 1.02
-    queryTwo.document = DocumentMock.new('{fieldTwo}')
+    queryTwo.document = '{fieldTwo}'
 
     report = Report.new
     report.add_query queryOne, {}, 1, 1.1
@@ -123,7 +112,7 @@ describe Report do
     query = Query.new
     query.report_field 'Person', 'firstName', 1, 1.1
     query.report_field 'Person', 'age', 1, 1.1
-    query.document = DocumentMock.new('{field}')
+    query.document = '{field}'
 
     report = Report.new
     report.add_query query, {}, 1, 1.25
@@ -161,7 +150,7 @@ describe Report do
     query.report_field 'Query', '__schema', 1, 1.1
     query.report_field 'Query', '__typename', 1, 1.1
     query.report_field 'Query', '__type', 1, 1.1
-    query.document = DocumentMock.new('{field}')
+    query.document = '{field}'
 
     report = Report.new
     report.add_query query, {}, 1, 1.25

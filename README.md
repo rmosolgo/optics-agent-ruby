@@ -48,11 +48,16 @@ Add something like this to your route:
 ```ruby
 post '/graphql' do
   request.body.rewind
-  document = JSON.parse request.body.read
-  result = Schema.execute(document["query"],
-    variables: document["variables"],
+  params = JSON.parse request.body.read
+  document = params['query']
+  variables = params['variables']
+
+  result = Schema.execute(
+    document,
+    variables: variables,
     context: { optics_agent: env[:optics_agent].with_document(document) }
   )
+
   JSON.generate(result)
 end
 ```
@@ -87,12 +92,15 @@ Register Optics Agent on the GraphQL context within your `graphql` action as bel
 def create
   query_string = params[:query]
   query_variables = ensure_hash(params[:variables])
-  result = YourSchema.execute(query_string,
+
+  result = YourSchema.execute(
+    query_string,
     variables: query_variables,
     context: {
-      optics_agent: env[:optics_agent].with_document(params)
+      optics_agent: env[:optics_agent].with_document(query_string)
     }
   )
+
   render json: result
 end
 ```
