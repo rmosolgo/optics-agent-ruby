@@ -6,7 +6,6 @@ module OpticsAgent::Reporting
     include SuckerPunch::Job
 
     def perform(agent)
-      puts 'performing schema job'
       schema = OpticsAgent::Reporting::Schema.new agent.schema
       schema.send
     end

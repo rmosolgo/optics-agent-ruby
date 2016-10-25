@@ -25,7 +25,6 @@ module OpticsAgent
       @schema = schema
       schema.middleware << graphql_middleware
 
-      puts 'scheduling schema job'
       SchemaJob.perform_in(10, self)
       schedule_report
     end
